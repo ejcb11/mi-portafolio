@@ -109,7 +109,12 @@ export const SkillsCarousel: React.FC = () => {
   return (
     <section id="skills" className="py-24 bg-dark-bg relative border-b border-dark-border overflow-hidden select-none">
       {/* Background ambient glows */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-neon/5 rounded-full blur-[170px] pointer-events-none" />
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[550px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(210, 245, 50, 0.06) 0%, transparent 70%)',
+        }}
+      />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
@@ -172,9 +177,14 @@ export const SkillsCarousel: React.FC = () => {
                         
                         {/* Ambient glow accent inside card */}
                         <div
-                          className={`absolute top-0 right-0 w-36 h-36 rounded-full blur-[60px] pointer-events-none transition-opacity duration-300 ${
-                            isActive ? 'bg-neon/15 opacity-100' : 'bg-white/5 opacity-40'
+                          className={`absolute top-0 right-0 w-44 h-44 pointer-events-none transition-opacity duration-300 ${
+                            isActive ? 'opacity-100' : 'opacity-30'
                           }`}
+                          style={{
+                            background: isActive
+                              ? 'radial-gradient(circle at top right, rgba(210, 245, 50, 0.16) 0%, transparent 70%)'
+                              : 'radial-gradient(circle at top right, rgba(255, 255, 255, 0.06) 0%, transparent 70%)',
+                          }}
                         />
 
                         {/* CARD CONTENT: Clean, elegant typography without icons or tag chips */}
@@ -247,14 +257,14 @@ export const SkillsCarousel: React.FC = () => {
             </div>
           </Carousel>
 
-          {/* DYNAMIC BLUR-TRANSITION ACTIVE CALLSIGN (Clean, no index numbers) */}
+          {/* DYNAMIC TRANSITION ACTIVE CALLSIGN (Clean, no index numbers) */}
           <AnimatePresence mode="wait">
             <motion.div
               key={current}
-              initial={{ opacity: 0, filter: 'blur(10px)', y: 8 }}
-              animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-              exit={{ opacity: 0, filter: 'blur(10px)', y: -8 }}
-              transition={{ duration: 0.35 }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25 }}
               className="mt-6 flex flex-col items-center justify-center text-center px-4"
             >
               <div className="font-syne font-black text-lg sm:text-xl text-white tracking-tight">

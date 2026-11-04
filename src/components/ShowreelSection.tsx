@@ -4,10 +4,11 @@ import { Play, Pause, Volume2, Volume1, VolumeX, Maximize, Minimize } from 'luci
 export const ShowreelSection: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const sliderRef = useRef<HTMLInputElement | null>(null);
+  const timeDisplayRef = useRef<HTMLSpanElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [volume, setVolume] = useState(0.85);
   const [isMuted, setIsMuted] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const timeRef = useRef(0);
@@ -138,12 +139,20 @@ export const ShowreelSection: React.FC = () => {
     }
   };
 
+  const formatTime = (secs: number) => {
+    const m = Math.floor(secs / 60);
+    const s = Math.floor(secs % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  };
+
   const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     initAudio();
     const val = parseFloat(e.target.value);
     timeRef.current = val;
     firedCuesRef.current.clear();
-    setCurrentTime(val);
+    if (timeDisplayRef.current) {
+      timeDisplayRef.current.textContent = `${formatTime(val)} / 0:15`;
+    }
   };
 
   const toggleFullscreen = () => {
@@ -153,12 +162,6 @@ export const ShowreelSection: React.FC = () => {
     } else {
       document.exitFullscreen?.().catch(() => {});
     }
-  };
-
-  const formatTime = (secs: number) => {
-    const m = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
-    return `${m}:${s.toString().padStart(2, '0')}`;
   };
 
   useEffect(() => {
@@ -540,6 +543,8 @@ export const ShowreelSection: React.FC = () => {
       prevTimeRef.current = t;
     };
 
+    const fontSizeCache = new Map<string, number>();
+
     const fillFittedText = (
       text: string,
       x: number,
@@ -555,10 +560,17 @@ export const ShowreelSection: React.FC = () => {
       ctx.textAlign = align;
       ctx.textBaseline = 'middle';
       ctx.fillStyle = color;
-      let size = maxFontSize;
-      ctx.font = `${weight} ${size}px ${family}`;
-      while (ctx.measureText(text).width > maxWidth && size > 10) {
-        size -= 1;
+      const cacheKey = `${text}|${maxWidth}|${maxFontSize}|${weight}|${family}`;
+      let size = fontSizeCache.get(cacheKey);
+      if (size === undefined) {
+        size = maxFontSize;
+        ctx.font = `${weight} ${size}px ${family}`;
+        while (ctx.measureText(text).width > maxWidth && size > 10) {
+          size -= 1;
+          ctx.font = `${weight} ${size}px ${family}`;
+        }
+        fontSizeCache.set(cacheKey, size);
+      } else {
         ctx.font = `${weight} ${size}px ${family}`;
       }
       ctx.fillText(text, x, y);
@@ -1231,7 +1243,15 @@ export const ShowreelSection: React.FC = () => {
           timeRef.current = 0;
         }
         processAudioTimeline(timeRef.current);
-        setCurrentTime(timeRef.current);
+        if (sliderRef.current) {
+          sliderRef.current.value = timeRef.current.toFixed(2);
+        }
+        if (timeDisplayRef.current) {
+          const secs = Math.floor(timeRef.current);
+          const m = Math.floor(secs / 60);
+          const s = secs % 60;
+          timeDisplayRef.current.textContent = `${m}:${s.toString().padStart(2, '0')} / 0:15`;
+        }
       }
 
       renderFrame(timeRef.current);
@@ -1280,11 +1300,12 @@ export const ShowreelSection: React.FC = () => {
             {/* Timeline Progress Slider */}
             <div className="relative w-full mb-2">
               <input
+                ref={sliderRef}
                 type="range"
                 min={0}
                 max={15}
                 step={0.01}
-                value={currentTime}
+                defaultValue={0}
                 onMouseDown={() => {
                   scrubbingRef.current = true;
                 }}
@@ -1349,8 +1370,11 @@ export const ShowreelSection: React.FC = () => {
                 </div>
 
                 {/* Time Display */}
-                <span className="font-sans text-xs text-zinc-300 font-medium tracking-tight select-none">
-                  {formatTime(currentTime)} / 0:15
+                <span
+                  ref={timeDisplayRef}
+                  className="font-sans text-xs text-zinc-300 font-medium tracking-tight select-none"
+                >
+                  0:00 / 0:15
                 </span>
               </div>
 

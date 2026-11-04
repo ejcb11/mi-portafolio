@@ -1,63 +1,49 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 export interface FlipTextProps {
-    /**
-     * Additional CSS classes for the wrapper
-     */
     className?: string;
-
-    /**
-     * The text content to animate (will be split by spaces)
-     */
     children: string;
-
-    /**
-     * Duration of the flip animation in seconds
-     * @default 2.5
-     */
     duration?: number;
-
-    /**
-     * Initial delay before animation starts in seconds
-     * @default 0
-     */
     delay?: number;
-
-    /**
-     * Whether the animation should loop infinitely
-     * @default true
-     */
     loop?: boolean;
-
-    /**
-     * Custom separator for splitting text (default is space)
-     * @default " "
-     */
     separator?: string;
-
-    /**
-     * Whether all characters should animate together (no stagger)
-     * @default false
-     */
     together?: boolean;
 }
 
 export function FlipText({
     className,
     children,
-    duration = 2.5,
+    duration = 4.0,
     delay = 0,
     loop = true,
     separator = " ",
     together = false,
 }: FlipTextProps) {
+    const wrapperRef = useRef<HTMLSpanElement | null>(null);
     const words = useMemo(() => children.split(separator), [children, separator]);
     const totalChars = children.length;
 
-    // Calculate character index for each position
+    useEffect(() => {
+        const el = wrapperRef.current;
+        if (!el) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    el.classList.add("is-visible");
+                } else {
+                    el.classList.remove("is-visible");
+                }
+            },
+            { threshold: 0.05 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
     const getCharIndex = (wordIndex: number, charIndex: number) => {
         let index = 0;
         for (let i = 0; i < wordIndex; i++) {
@@ -68,6 +54,7 @@ export function FlipText({
 
     return (
         <span
+            ref={wrapperRef}
             className={cn(
                 "flip-text-wrapper inline-block leading-none",
                 className
@@ -86,12 +73,11 @@ export function FlipText({
                         {chars.map((char, charIndex) => {
                             const currentGlobalIndex = getCharIndex(wordIndex, charIndex);
 
-                            // Calculate delay - if together, use same delay for all
                             let calculatedDelay = delay;
                             if (!together) {
                                 const normalizedIndex = currentGlobalIndex / totalChars;
                                 const sineValue = Math.sin(normalizedIndex * (Math.PI / 2));
-                                calculatedDelay = sineValue * (duration * 0.25) + delay;
+                                calculatedDelay = sineValue * (duration * 0.2) + delay;
                             }
 
                             return (

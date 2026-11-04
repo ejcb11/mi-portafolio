@@ -20,7 +20,7 @@ export const WaveGridSection: React.FC = () => {
         waveSpeed={isMobile ? 4.0 : 6.0}
         waveFrequency={1.2}
         waveWidth={isMobile ? 2.2 : 3.2}
-        gridSize={isMobile ? 18 : 36}
+        gridSize={isMobile ? 14 : 22}
         vignette={!isMobile}
         autoAnimate={true}
         className="w-full h-full"

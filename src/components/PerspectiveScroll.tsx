@@ -5,7 +5,6 @@ import {
   useScroll,
   useTransform,
 } from 'framer-motion';
-import { ReactLenis } from 'lenis/react';
 import { Sparkles, Terminal } from 'lucide-react';
 import { PORTFOLIO_DATA } from '../utils/portfolioData';
 
@@ -18,42 +17,40 @@ export const PerspectiveScroll: React.FC = () => {
   });
 
   // Calculate dynamic vertical crawl across the 3D perspective field
-  const yMotionValue = useTransform(scrollYProgress, [0, 1], [580, -680]);
-  const transform = useMotionTemplate`rotateX(28deg) translateY(${yMotionValue}px) translateZ(10px)`;
+  const yMotionValue = useTransform(scrollYProgress, [0, 1], [480, -580]);
+  const transform = useMotionTemplate`rotateX(26deg) translate3d(0px, ${yMotionValue}px, 0px)`;
 
   return (
-    <ReactLenis root options={{ syncTouch: false, touchMultiplier: 1.0, smoothWheel: true }}>
-      <section
-        ref={targetRef}
-        id="perspective-manifesto"
-        className="relative z-0 h-[170vh] sm:h-[220vh] md:h-[280vh] w-full bg-dark-bg text-white border-b border-dark-border select-none"
+    <section
+      ref={targetRef}
+      id="perspective-manifesto"
+      className="relative z-0 h-[165vh] sm:h-[200vh] md:h-[230vh] w-full bg-dark-bg text-white border-b border-dark-border select-none"
+    >
+      {/* STICKY 3D PERSPECTIVE STAGE */}
+      <div
+        className="sticky top-0 mx-auto flex h-screen w-full items-center justify-center bg-dark-bg py-12 sm:py-20 overflow-hidden"
+        style={{
+          perspective: '260px',
+        }}
       >
-        {/* STICKY 3D PERSPECTIVE STAGE */}
-        <div
-          className="sticky top-0 mx-auto flex h-screen w-full items-center justify-center bg-dark-bg py-12 sm:py-20 overflow-hidden"
+        {/* Top horizon fade */}
+        <div className="absolute top-0 left-0 right-0 h-32 sm:h-44 bg-gradient-to-b from-dark-bg via-dark-bg/90 to-transparent pointer-events-none z-20" />
+
+        {/* Bottom horizon fade */}
+        <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-52 bg-gradient-to-t from-dark-bg via-dark-bg/95 to-transparent pointer-events-none z-20" />
+
+        {/* Left and right vignette edges */}
+        <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
+        <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
+
+        {/* 3D CRAWLING TEXT MATRIX (Single GPU texture layer) */}
+        <motion.div
           style={{
-            transformStyle: 'preserve-3d',
-            perspective: '220px',
+            transform,
+            willChange: 'transform',
           }}
+          className="w-full max-w-5xl px-4 sm:px-6 text-center font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.14] tracking-tight uppercase"
         >
-          {/* Top horizon fade */}
-          <div className="absolute top-0 left-0 right-0 h-32 sm:h-44 bg-gradient-to-b from-dark-bg via-dark-bg/90 to-transparent pointer-events-none z-20" />
-
-          {/* Bottom horizon fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-52 bg-gradient-to-t from-dark-bg via-dark-bg/95 to-transparent pointer-events-none z-20" />
-
-          {/* Left and right vignette edges */}
-          <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-          <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
-
-          {/* 3D CRAWLING TEXT MATRIX */}
-          <motion.div
-            style={{
-              transformStyle: 'preserve-3d',
-              transform,
-            }}
-            className="w-full max-w-5xl px-4 sm:px-6 text-center font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-7xl leading-[1.12] tracking-tight uppercase"
-          >
             {/* Block 1: Identity & Engineering */}
             <div className="mb-10 sm:mb-14">
               <span className="text-zinc-500 block text-xs sm:text-base md:text-xl font-mono tracking-widest font-normal mb-2">
@@ -139,19 +136,18 @@ export const PerspectiveScroll: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* BOTTOM HUD STATUS BAR */}
-        <div className="absolute bottom-6 left-6 right-6 z-30 flex items-center justify-between font-mono text-[11px] sm:text-xs text-zinc-400 pointer-events-none">
-          <div className="flex items-center gap-2">
-            <Terminal className="w-3.5 h-3.5 text-neon" />
-            <span>UPTAIET • INFORMÁTICA • EJCB</span>
-          </div>
-          <div className="hidden sm:flex items-center gap-2 text-zinc-400">
-            <Sparkles className="w-3.5 h-3.5 text-neon" />
-            <span>TRANSFORM 3D PERSPECTIVE // LENIS REACT</span>
-          </div>
+      {/* BOTTOM HUD STATUS BAR */}
+      <div className="absolute bottom-6 left-6 right-6 z-30 flex items-center justify-between font-mono text-[11px] sm:text-xs text-zinc-400 pointer-events-none">
+        <div className="flex items-center gap-2">
+          <Terminal className="w-3.5 h-3.5 text-neon" />
+          <span>UPTAIET • INFORMÁTICA • EJCB</span>
         </div>
-      </section>
-    </ReactLenis>
+        <div className="hidden sm:flex items-center gap-2 text-zinc-400">
+          <Sparkles className="w-3.5 h-3.5 text-neon" />
+          <span>TRANSFORM 3D PERSPECTIVE</span>
+        </div>
+      </div>
+    </section>
   );
 };
 

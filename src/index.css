@@ -8,17 +8,13 @@
   }
   
   html {
-    scroll-behavior: smooth;
     background-color: #080809;
     color: #ffffff;
-    overflow-x: hidden;
-    max-width: 100vw;
     -webkit-text-size-adjust: 100%;
   }
 
   body {
-    overflow-x: hidden;
-    max-width: 100vw;
+    overflow-x: clip;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 
@@ -111,7 +107,14 @@
   height: 1.25em;
   line-height: 1.25em;
   vertical-align: middle;
-  animation: flip-char-rotate var(--flip-duration, 2.8s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+  animation: flip-char-rotate var(--flip-duration, 4s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+  animation-play-state: paused;
+}
+
+.flip-text-wrapper.is-visible .flip-char,
+.flip-text-wrapper.is-visible .flip-char::before,
+.flip-text-wrapper.is-visible .flip-char::after {
+  animation-play-state: running;
 }
 
 .flip-char::before,
@@ -133,7 +136,8 @@
   justify-content: center;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  animation: flip-char-fade var(--flip-duration, 2.8s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+  animation: flip-char-fade var(--flip-duration, 4s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+  animation-play-state: paused;
 }
 
 /* Front Face (Initial) */

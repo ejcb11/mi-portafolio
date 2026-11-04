@@ -10,13 +10,18 @@ export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setScrolled(scrollY > 20);
+    let ticking = false;
 
-      // When near top (hero section), no nav link should be active
+    const updateScrollState = () => {
+      const scrollY = window.scrollY;
+      setScrolled((prev) => {
+        const next = scrollY > 20;
+        return prev === next ? prev : next;
+      });
+
       if (scrollY < 300) {
-        setActiveSection('');
+        setActiveSection((prev) => (prev === '' ? prev : ''));
+        ticking = false;
         return;
       }
 
@@ -35,11 +40,19 @@ export const Navbar: React.FC = () => {
         }
       }
 
-      setActiveSection(current);
+      setActiveSection((prev) => (prev === current ? prev : current));
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateScrollState);
+      }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
+    updateScrollState();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 

@@ -46,13 +46,11 @@ export const Projects: React.FC = () => {
               const isActive = activeProjectId === project.id;
 
               return (
-                <motion.div
+                <div
                   key={project.id}
-                  layout
-                  transition={{ type: "spring", stiffness: 300, damping: 32 }}
                   onMouseEnter={() => setActiveProjectId(project.id)}
                   onClick={() => openProjectModal(project)}
-                  className={`relative group cursor-pointer overflow-hidden rounded-2xl border transition-colors duration-300 ${
+                  className={`relative group cursor-pointer overflow-hidden rounded-2xl border transition-[flex,border-color,box-shadow] duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] ${
                     isActive
                       ? 'flex-[3.8] lg:flex-[4.2] border-neon/70 shadow-[0_0_35px_rgba(210,245,50,0.18)]'
                       : 'flex-1 border-dark-border hover:border-zinc-500'
@@ -61,11 +59,11 @@ export const Projects: React.FC = () => {
                   {/* BACKGROUND MEDIA */}
                   <div className="absolute inset-0 w-full h-full bg-black overflow-hidden">
                     <img
-                      src={isActive ? project.image : (project.staticPreview || project.image)}
+                      src={project.staticPreview || project.image}
                       alt={project.title}
                       loading="lazy"
                       decoding="async"
-                      className={`w-full h-full object-cover transition-all duration-500 ${
+                      className={`w-full h-full object-cover transition-[transform,opacity,filter] duration-500 ${
                         isActive
                           ? 'grayscale-0 scale-100 opacity-90'
                           : 'grayscale brightness-[0.35] group-hover:brightness-50 scale-105 opacity-60'
@@ -202,7 +200,7 @@ export const Projects: React.FC = () => {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </motion.div>
+                </div>
               );
             })}
           </div>
@@ -222,7 +220,7 @@ export const Projects: React.FC = () => {
                       setActiveProjectId(project.id);
                     }
                   }}
-                  className={`relative rounded-2xl border overflow-hidden transition-all duration-300 ${
+                  className={`relative rounded-2xl border overflow-hidden transition-colors duration-300 ${
                     isActive
                       ? 'border-neon/70 shadow-[0_0_25px_rgba(210,245,50,0.15)]'
                       : 'border-dark-border bg-dark-card'
@@ -247,7 +245,7 @@ export const Projects: React.FC = () => {
                       {/* Background image */}
                       <div className="absolute inset-0 w-full h-full bg-black overflow-hidden">
                         <img
-                          src={isActive ? project.image : (project.staticPreview || project.image)}
+                          src={project.staticPreview || project.image}
                           alt={project.title}
                           loading="lazy"
                           decoding="async"

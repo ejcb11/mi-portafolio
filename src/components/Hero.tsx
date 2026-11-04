@@ -7,9 +7,19 @@ import { GithubIcon, LinkedinIcon } from './Icons';
 export const Hero: React.FC = () => {
   return (
     <section className="relative min-h-[90vh] pt-24 pb-12 flex flex-col justify-between overflow-hidden bg-grid-pattern">
-      {/* Ambient background glows */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[450px] bg-neon/8 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute top-20 right-10 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-[130px] pointer-events-none" />
+      {/* Ambient background glows (zero-cost radial gradients instead of GPU-heavy blur filters) */}
+      <div
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[750px] h-[550px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(210, 245, 50, 0.08) 0%, transparent 70%)',
+        }}
+      />
+      <div
+        className="absolute top-20 right-10 w-[380px] h-[380px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.05) 0%, transparent 70%)',
+        }}
+      />
 
       {/* HOMOGENEOUS HERO CANVAS */}
       <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 my-auto relative z-10">
@@ -97,7 +107,12 @@ export const Hero: React.FC = () => {
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className="w-[280px] sm:w-[440px] lg:w-[520px] h-[280px] sm:h-[440px] lg:h-[520px] rounded-full border border-dashed border-zinc-800/60 animate-spin-slow" />
               <div className="absolute w-[200px] sm:w-[320px] lg:w-[380px] h-[200px] sm:h-[320px] lg:h-[380px] rounded-full border border-neon/15 animate-pulse" />
-              <div className="absolute w-[260px] sm:w-[420px] h-[260px] sm:h-[420px] rounded-full bg-neon/5 blur-[50px] sm:blur-[100px]" />
+              <div
+                className="absolute w-[280px] sm:w-[440px] h-[280px] sm:h-[440px] rounded-full"
+                style={{
+                  background: 'radial-gradient(circle at center, rgba(210, 245, 50, 0.07) 0%, transparent 70%)',
+                }}
+              />
             </div>
 
             {/* 3D Sphere Component */}
