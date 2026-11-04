@@ -117,7 +117,7 @@ export const SkillsCarousel: React.FC = () => {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12 border-b border-dark-border/80 pb-6">
           <div>
             <h2>
-              <FlipText className="font-syne font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
+              <FlipText className="font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
                 SKILLS
               </FlipText>
             </h2>

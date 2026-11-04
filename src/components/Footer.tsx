@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
     <footer className="bg-dark-bg text-white relative border-t border-dark-border overflow-hidden select-none">
       
       {/* CINEMATIC ANIMATED ASCII FOOTER: EJCB REVEAL & INTERACTIVE HANDS */}
-      <div className="relative h-[480px] sm:h-[540px] md:h-[600px] w-full overflow-hidden border-b border-dark-border bg-[#080809]">
+      <div className="relative h-[380px] sm:h-[480px] md:h-[600px] w-full overflow-hidden border-b border-dark-border bg-[#080809]">
         <AnimatedFooter
           headingLines={[PORTFOLIO_DATA.driver.tag]}
           leftImage="/animated-footer/hand-left.jpg"
@@ -24,7 +24,8 @@ export const Footer: React.FC = () => {
           charColor="#222c0d"
           hoverColor="#D2F532"
           hoverCharColor="#080809"
-          rootMargin="400px 0px 200px 0px"
+          columns={typeof window !== 'undefined' && window.innerWidth < 768 ? 48 : 80}
+          rootMargin="200px 0px 100px 0px"
           threshold={0}
           headingClassName="text-[#191a22] hover:text-[#232530] transition-colors duration-500 select-none"
         />

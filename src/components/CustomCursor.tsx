@@ -37,8 +37,10 @@ export const CustomCursor: React.FC = () => {
     };
   }, []);
 
-  // Smooth easing for outer ring
+  // Smooth easing for outer ring (disabled on touch devices)
   useEffect(() => {
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     let animId: number;
     const follow = () => {
       setTrailingPos((prev) => ({

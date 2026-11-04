@@ -22,29 +22,29 @@ export const PerspectiveScroll: React.FC = () => {
   const transform = useMotionTemplate`rotateX(28deg) translateY(${yMotionValue}px) translateZ(10px)`;
 
   return (
-    <ReactLenis root>
+    <ReactLenis root options={{ syncTouch: false, touchMultiplier: 1.0, smoothWheel: true }}>
       <section
         ref={targetRef}
         id="perspective-manifesto"
-        className="relative z-0 h-[280vh] w-full bg-dark-bg text-white border-b border-dark-border select-none"
+        className="relative z-0 h-[170vh] sm:h-[220vh] md:h-[280vh] w-full bg-dark-bg text-white border-b border-dark-border select-none"
       >
         {/* STICKY 3D PERSPECTIVE STAGE */}
         <div
-          className="sticky top-0 mx-auto flex h-screen w-full items-center justify-center bg-dark-bg py-20 overflow-hidden"
+          className="sticky top-0 mx-auto flex h-screen w-full items-center justify-center bg-dark-bg py-12 sm:py-20 overflow-hidden"
           style={{
             transformStyle: 'preserve-3d',
             perspective: '220px',
           }}
         >
           {/* Top horizon fade */}
-          <div className="absolute top-0 left-0 right-0 h-44 bg-gradient-to-b from-dark-bg via-dark-bg/90 to-transparent pointer-events-none z-20" />
+          <div className="absolute top-0 left-0 right-0 h-32 sm:h-44 bg-gradient-to-b from-dark-bg via-dark-bg/90 to-transparent pointer-events-none z-20" />
 
           {/* Bottom horizon fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-52 bg-gradient-to-t from-dark-bg via-dark-bg/95 to-transparent pointer-events-none z-20" />
+          <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-52 bg-gradient-to-t from-dark-bg via-dark-bg/95 to-transparent pointer-events-none z-20" />
 
           {/* Left and right vignette edges */}
-          <div className="absolute top-0 bottom-0 left-0 w-24 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-          <div className="absolute top-0 bottom-0 right-0 w-24 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
+          <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
+          <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
 
           {/* 3D CRAWLING TEXT MATRIX */}
           <motion.div
@@ -52,11 +52,11 @@ export const PerspectiveScroll: React.FC = () => {
               transformStyle: 'preserve-3d',
               transform,
             }}
-            className="w-full max-w-5xl px-6 text-center font-syne font-black text-3xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.12] tracking-tight uppercase"
+            className="w-full max-w-5xl px-4 sm:px-6 text-center font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-7xl leading-[1.12] tracking-tight uppercase"
           >
             {/* Block 1: Identity & Engineering */}
-            <div className="mb-14">
-              <span className="text-zinc-500 block text-lg sm:text-xl md:text-2xl font-mono tracking-widest font-normal mb-2">
+            <div className="mb-10 sm:mb-14">
+              <span className="text-zinc-500 block text-xs sm:text-base md:text-xl font-mono tracking-widest font-normal mb-2">
                 01 // IDENTIDAD & VISIÓN
               </span>
               <span className="text-white">
@@ -69,8 +69,8 @@ export const PerspectiveScroll: React.FC = () => {
             </div>
 
             {/* Block 2: Academic Background */}
-            <div className="mb-14">
-              <span className="text-zinc-500 block text-lg sm:text-xl md:text-2xl font-mono tracking-widest font-normal mb-2">
+            <div className="mb-10 sm:mb-14">
+              <span className="text-zinc-500 block text-xs sm:text-base md:text-xl font-mono tracking-widest font-normal mb-2">
                 02 // FORMACIÓN UNIVERSITARIA RIGUROSA
               </span>
               <span className="text-white">
@@ -83,8 +83,8 @@ export const PerspectiveScroll: React.FC = () => {
             </div>
 
             {/* Block 3: Frontend & Design Architecture */}
-            <div className="mb-14">
-              <span className="text-zinc-500 block text-lg sm:text-xl md:text-2xl font-mono tracking-widest font-normal mb-2">
+            <div className="mb-10 sm:mb-14">
+              <span className="text-zinc-500 block text-xs sm:text-base md:text-xl font-mono tracking-widest font-normal mb-2">
                 03 // ARQUITECTURA FRONTEND & UI/UX
               </span>
               <span className="text-white">INTERFACES ULTRA-RÁPIDAS CON </span>
@@ -98,8 +98,8 @@ export const PerspectiveScroll: React.FC = () => {
             </div>
 
             {/* Block 4: Mobile & Backend Ecosystems */}
-            <div className="mb-14">
-              <span className="text-zinc-500 block text-lg sm:text-xl md:text-2xl font-mono tracking-widest font-normal mb-2">
+            <div className="mb-10 sm:mb-14">
+              <span className="text-zinc-500 block text-xs sm:text-base md:text-xl font-mono tracking-widest font-normal mb-2">
                 04 // MOBILE MULTIPLATAFORMA & CLOUD
               </span>
               <span className="text-white">DESARROLLO MÓVIL EN </span>
@@ -113,8 +113,8 @@ export const PerspectiveScroll: React.FC = () => {
             </div>
 
             {/* Block 5: International Certifications */}
-            <div className="mb-14">
-              <span className="text-zinc-500 block text-lg sm:text-xl md:text-2xl font-mono tracking-widest font-normal mb-2">
+            <div className="mb-10 sm:mb-14">
+              <span className="text-zinc-500 block text-xs sm:text-base md:text-xl font-mono tracking-widest font-normal mb-2">
                 05 // CERTIFICACIONES GLOBALES
               </span>
               <span className="text-neon">ANTHROPIC AI FLUENCY</span>{' '}

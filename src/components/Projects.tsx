@@ -31,7 +31,7 @@ export const Projects: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <h2>
-              <FlipText className="font-syne font-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
+              <FlipText className="font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
                 PROYECTOS DESTACADOS
               </FlipText>
             </h2>

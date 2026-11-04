@@ -29,8 +29,9 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
       antialias: true,
       powerPreference: 'high-performance'
     });
+    const isMobile = window.innerWidth < 768;
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.75));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.2;
     container.appendChild(renderer.domElement);
@@ -214,8 +215,19 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
     let animationFrameId: number;
     let lastTime = performance.now();
 
-    const animate = (currentTime: number) => {
+    // Pause WebGL rendering loop when offscreen to preserve mobile GPU/CPU
+    let isVisible = true;
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    visibilityObserver.observe(container);
+
+    const animate = (currentTime: number = performance.now()) => {
       animationFrameId = requestAnimationFrame(animate);
+      if (!isVisible) return;
 
       const delta = (currentTime - lastTime) * 0.001;
       lastTime = currentTime;
@@ -256,6 +268,7 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      visibilityObserver.disconnect();
       window.removeEventListener('mousemove', handleMouseMove);
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('resize', handleResize);
@@ -278,7 +291,7 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
 
   return (
     <div 
-      className="relative w-full h-[520px] sm:h-[600px] lg:h-[680px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible"
+      className="relative w-full h-[320px] sm:h-[460px] lg:h-[620px] flex items-center justify-center cursor-grab active:cursor-grabbing select-none overflow-visible"
     >
       {/* 3D WebGL Canvas Mount */}
       <div ref={mountRef} className="absolute inset-0 w-full h-full flex items-center justify-center overflow-visible" />

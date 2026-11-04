@@ -1205,8 +1205,23 @@ export const ShowreelSection: React.FC = () => {
 
     let rafId: number;
     let lastTs = performance.now();
+    let isVisible = true;
+    let observer: IntersectionObserver | null = null;
+
+    if (containerRef.current) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting;
+        },
+        { threshold: 0.05 }
+      );
+      observer.observe(containerRef.current);
+    }
 
     const loop = (now: number) => {
+      rafId = requestAnimationFrame(loop);
+      if (!isVisible) return;
+
       const dt = (now - lastTs) / 1000;
       lastTs = now;
 
@@ -1220,17 +1235,19 @@ export const ShowreelSection: React.FC = () => {
       }
 
       renderFrame(timeRef.current);
-      rafId = requestAnimationFrame(loop);
     };
 
     rafId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafId);
+    return () => {
+      cancelAnimationFrame(rafId);
+      if (observer) observer.disconnect();
+    };
   }, []);
 
   return (
     <section className="py-16 md:py-24 bg-dark-bg border-b border-dark-border select-none">
       {/* 75% of the window width (desktop), responsive on smaller viewports */}
-      <div className="w-[92vw] lg:w-[75vw] max-w-[75vw] mx-auto">
+      <div className="w-full max-w-[94vw] lg:max-w-[75vw] mx-auto">
         <div
           ref={containerRef}
           className="relative w-full aspect-[1280/656] bg-black rounded-xl overflow-hidden border border-zinc-800 shadow-[0_20px_50px_rgba(0,0,0,0.8)] group"

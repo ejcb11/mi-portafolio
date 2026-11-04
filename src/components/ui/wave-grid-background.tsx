@@ -485,9 +485,19 @@ export function WaveGridBackground({
     resizeObserver.observe(container);
     window.addEventListener("resize", applySize);
 
-    // ── Animation loop ─────────────────────────────────────────────────────
+    // ── Animation loop (paused when offscreen to preserve mobile resources) ──
+    let isVisible = true;
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+      },
+      { threshold: 0.05 }
+    );
+    visibilityObserver.observe(container);
+
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
+      if (!isVisible) return;
       const delta = clock.getDelta();
       const p = propsRef.current;
 
@@ -512,6 +522,7 @@ export function WaveGridBackground({
     // ── Cleanup ──────────────────────────────────────────────────────────────
     return () => {
       renderer.setAnimationLoop(null);
+      visibilityObserver.disconnect();
       window.removeEventListener("resize", applySize);
       canvas.removeEventListener("pointermove", onPointerMove);
       canvas.removeEventListener("pointerleave", onPointerLeave);

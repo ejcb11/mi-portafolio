@@ -373,7 +373,13 @@ export function AnimatedFooter({
 
     // ── Unified render loop: ASCII + parallax + reveal curtain ───────────
     let rafId = 0;
+    let isRevealed = !revealOnScroll;
+
     const frame = () => {
+      rafId = requestAnimationFrame(frame);
+      // Skip rendering and parallax calculations when the footer is offscreen
+      if (revealOnScroll && !isRevealed) return;
+
       const now = Date.now();
       for (const hand of hands) renderHand(hand, now);
 
@@ -447,7 +453,7 @@ export function AnimatedFooter({
       // scrollable ancestor (the page in real use, or the preview's scroll
       // container in the docs). Plays in when the footer crosses into view and
       // reverses when you scroll back up.
-      let isRevealed = false;
+      isRevealed = false;
       observer = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {

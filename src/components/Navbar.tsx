@@ -118,7 +118,7 @@ export const Navbar: React.FC = () => {
               rel="noopener noreferrer"
               aria-label="GitHub de Eduardo Contreras"
               title="GitHub"
-              className="w-9 h-9 sm:w-10 sm:h-10 bg-dark-card hover:bg-neon hover:text-black text-white border border-dark-border hover:border-neon transition-all duration-200 cut-corner-sm flex items-center justify-center hover:shadow-[0_0_20px_rgba(210,245,50,0.4)] active:scale-95"
+              className="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 bg-dark-card hover:bg-neon hover:text-black text-white border border-dark-border hover:border-neon transition-all duration-200 cut-corner-sm items-center justify-center hover:shadow-[0_0_20px_rgba(210,245,50,0.4)] active:scale-95"
             >
               <GithubIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             </a>
@@ -129,7 +129,7 @@ export const Navbar: React.FC = () => {
               rel="noopener noreferrer"
               aria-label="LinkedIn de Eduardo Contreras"
               title="LinkedIn"
-              className="w-9 h-9 sm:w-10 sm:h-10 bg-dark-card hover:bg-neon hover:text-black text-white border border-dark-border hover:border-neon transition-all duration-200 cut-corner-sm flex items-center justify-center hover:shadow-[0_0_20px_rgba(210,245,50,0.4)] active:scale-95"
+              className="hidden sm:flex w-9 h-9 sm:w-10 sm:h-10 bg-dark-card hover:bg-neon hover:text-black text-white border border-dark-border hover:border-neon transition-all duration-200 cut-corner-sm items-center justify-center hover:shadow-[0_0_20px_rgba(210,245,50,0.4)] active:scale-95"
             >
               <LinkedinIcon className="w-4 h-4 sm:w-5 sm:h-5" />
             </a>

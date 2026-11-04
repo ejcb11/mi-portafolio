@@ -28,15 +28,15 @@ export const Hero: React.FC = () => {
             </h1>
 
             {/* SUBHEADING BIO */}
-            <p className="font-space text-zinc-300 text-base sm:text-lg max-w-xl leading-relaxed mb-8">
+            <p className="font-space text-zinc-300 text-sm sm:text-lg max-w-xl leading-relaxed mb-6 sm:mb-8">
               {PORTFOLIO_DATA.driver.subheading}
             </p>
 
             {/* ACTION BUTTONS */}
-            <div className="flex flex-wrap items-center gap-4">
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-4">
               <a
                 href="#projects"
-                className="group inline-flex items-center gap-3 bg-neon hover:bg-neon-hover text-black px-7 py-3.5 font-syne font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 cut-corner-br hover:shadow-[0_0_30px_rgba(210,245,50,0.5)] active:scale-95"
+                className="group inline-flex items-center gap-3 bg-neon hover:bg-neon-hover text-black px-6 sm:px-7 py-3 sm:py-3.5 font-syne font-black text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 cut-corner-br hover:shadow-[0_0_30px_rgba(210,245,50,0.5)] active:scale-95"
               >
                 <span>VER PROYECTOS</span>
                 <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -44,7 +44,7 @@ export const Hero: React.FC = () => {
 
               <a
                 href="#skills"
-                className="inline-flex items-center gap-2 bg-dark-card hover:bg-dark-cardHover text-white px-6 py-3.5 border border-dark-border hover:border-neon font-mono text-xs uppercase tracking-wider transition-all duration-200 cut-corner-br"
+                className="inline-flex items-center gap-2 bg-dark-card hover:bg-dark-cardHover text-white px-5 sm:px-6 py-3 sm:py-3.5 border border-dark-border hover:border-neon font-mono text-xs uppercase tracking-wider transition-all duration-200 cut-corner-br"
               >
                 <Terminal className="w-4 h-4 text-neon" />
                 <span>HABILIDADES & STACK</span>
@@ -54,7 +54,7 @@ export const Hero: React.FC = () => {
                 href={PORTFOLIO_DATA.driver.github}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-3.5 text-zinc-400 hover:text-neon font-mono text-xs tracking-wider transition-colors"
+                className="inline-flex items-center gap-2 px-3 sm:px-4 py-3 sm:py-3.5 text-zinc-400 hover:text-neon font-mono text-xs tracking-wider transition-colors"
                 title="GitHub"
               >
                 <GithubIcon className="w-4 h-4 text-neon" />
@@ -65,7 +65,7 @@ export const Hero: React.FC = () => {
                 href={PORTFOLIO_DATA.driver.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-3.5 text-zinc-400 hover:text-neon font-mono text-xs tracking-wider transition-colors"
+                className="inline-flex items-center gap-2 px-3 sm:px-4 py-3 sm:py-3.5 text-zinc-400 hover:text-neon font-mono text-xs tracking-wider transition-colors"
                 title="LinkedIn"
               >
                 <LinkedinIcon className="w-4 h-4 text-neon" />
@@ -74,18 +74,18 @@ export const Hero: React.FC = () => {
             </div>
 
             {/* MICRO STATS BAR */}
-            <div className="grid grid-cols-3 gap-6 pt-8 mt-8 border-t border-dark-border/60 max-w-lg font-mono">
+            <div className="grid grid-cols-3 gap-3 sm:gap-6 pt-6 sm:pt-8 mt-6 sm:mt-8 border-t border-dark-border/60 max-w-lg font-mono">
               <div>
-                <div className="text-xl sm:text-2xl font-black text-white">TSU + ING</div>
-                <div className="text-[11px] text-zinc-400 uppercase">UPTAIET Informática</div>
+                <div className="text-lg sm:text-2xl font-black text-white">TSU + ING</div>
+                <div className="text-[10px] sm:text-[11px] text-zinc-400 uppercase">UPTAIET Informática</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-black text-neon">100/100</div>
-                <div className="text-[11px] text-zinc-400 uppercase">Lighthouse Perf</div>
+                <div className="text-lg sm:text-2xl font-black text-neon">100/100</div>
+                <div className="text-[10px] sm:text-[11px] text-zinc-400 uppercase">Lighthouse Perf</div>
               </div>
               <div>
-                <div className="text-xl sm:text-2xl font-black text-white">B2 LEVEL</div>
-                <div className="text-[11px] text-zinc-400 uppercase">Inglés Intermedio</div>
+                <div className="text-lg sm:text-2xl font-black text-white">B2 LEVEL</div>
+                <div className="text-[10px] sm:text-[11px] text-zinc-400 uppercase">Inglés Intermedio</div>
               </div>
             </div>
 
@@ -95,9 +95,9 @@ export const Hero: React.FC = () => {
           <div className="w-full lg:w-1/2 flex items-center justify-center relative overflow-visible">
             {/* Ambient halo rings & soft radial glow */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-[340px] sm:w-[440px] lg:w-[520px] h-[340px] sm:h-[440px] lg:h-[520px] rounded-full border border-dashed border-zinc-800/60 animate-spin-slow" />
-              <div className="absolute w-[240px] sm:w-[320px] lg:w-[380px] h-[240px] sm:h-[320px] lg:h-[380px] rounded-full border border-neon/15 animate-pulse" />
-              <div className="absolute w-[320px] sm:w-[420px] h-[320px] sm:h-[420px] rounded-full bg-neon/5 blur-[100px]" />
+              <div className="w-[280px] sm:w-[440px] lg:w-[520px] h-[280px] sm:h-[440px] lg:h-[520px] rounded-full border border-dashed border-zinc-800/60 animate-spin-slow" />
+              <div className="absolute w-[200px] sm:w-[320px] lg:w-[380px] h-[200px] sm:h-[320px] lg:h-[380px] rounded-full border border-neon/15 animate-pulse" />
+              <div className="absolute w-[260px] sm:w-[420px] h-[260px] sm:h-[420px] rounded-full bg-neon/5 blur-[50px] sm:blur-[100px]" />
             </div>
 
             {/* 3D Sphere Component */}
