@@ -6,6 +6,8 @@ import path from 'path'
 export default defineConfig({
   // Relative base path ensures flawless hosting on GitHub Pages, Vercel, Netlify, or subpaths
   base: './',
+  // Only expose variables explicitly marked as VITE_PUBLIC_ to prevent accidental API key leaks
+  envPrefix: 'VITE_PUBLIC_',
   plugins: [react()],
   resolve: {
     alias: {
@@ -13,6 +15,8 @@ export default defineConfig({
     },
   },
   build: {
+    // Disable source maps in production to prevent source code reconstruction
+    sourcemap: false,
     rollupOptions: {
       output: {
         manualChunks(id: string) {

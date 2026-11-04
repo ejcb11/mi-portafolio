@@ -7,11 +7,34 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies & Build Outputs
 node_modules
 dist
 dist-ssr
 archive_media
-*.local
+.vercel
+
+# Environment Variables & Secrets (NEVER commit secrets to Git)
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+!.env.example
+
+# Cryptographic Keys, Certificates & Databases
+*.pem
+*.key
+*.crt
+*.cer
+*.pfx
+*.p12
+*.sqlite
+*.sqlite3
+*.db
+secrets.*
+credentials.*
 
 # Editor directories and files
 .vscode/*

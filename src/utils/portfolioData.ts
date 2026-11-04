@@ -1,3 +1,5 @@
+import { deepFreeze, decodeProtectedString } from './security';
+
 export interface Project {
   id: string;
   number: string;
@@ -43,7 +45,7 @@ export interface ExperienceItem {
   highlights: string[];
 }
 
-export const PORTFOLIO_DATA = {
+export const PORTFOLIO_DATA = deepFreeze({
   driver: {
     firstName: "EDUARDO",
     lastName: "CONTRERAS",
@@ -52,7 +54,7 @@ export const PORTFOLIO_DATA = {
     tagline: "SOFTWARE DEVELOPER // FRONTEND & FULL STACK",
     subheading: "TSU en Informática y estudiante del último año de Ingeniería en Informática (UPTAIET). Diseño y desarrollo aplicaciones web y móviles de alto rendimiento con React, Flutter, Node.js y Supabase, priorizando código limpio, diseño UI/UX y arquitecturas escalables.",
     location: "Colón, Táchira (Remoto)",
-    email: "ejcb2006@gmail.com",
+    email: decodeProtectedString("PzA5OGhqamwaPTc7MzZ0OTU3"),
     github: "https://github.com/ejcb11",
     linkedin: "https://www.linkedin.com/in/eduardo-contreras-dev/",
     englishLevel: "Nivel B1 (Intermedio)",
@@ -184,7 +186,7 @@ export const PORTFOLIO_DATA = {
         { label: "BASE DATOS", value: "SQLITE3" },
         { label: "SEGURIDAD", value: "AUTH SESSIONS" }
       ],
-      image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1200&auto=format&fit=crop",
+      image: "/projects/clinimant_logo.jpg",
       staticPreview: "/projects/clinimant_logo.jpg",
       featured: false
     }
@@ -338,4 +340,4 @@ export const PORTFOLIO_DATA = {
       author: "EDUARDO CONTRERAS // SOFTWARE DEVELOPER"
     }
   ]
-};
+});
