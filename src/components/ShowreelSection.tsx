@@ -1215,26 +1215,19 @@ export const ShowreelSection: React.FC = () => {
       else renderScene5(t);
     };
 
-    let rafId: number;
+    let rafId = 0;
     let lastTs = performance.now();
-    let isVisible = true;
+    let isVisible = false;
     let observer: IntersectionObserver | null = null;
 
-    if (containerRef.current) {
-      observer = new IntersectionObserver(
-        ([entry]) => {
-          isVisible = entry.isIntersecting;
-        },
-        { threshold: 0.05 }
-      );
-      observer.observe(containerRef.current);
-    }
-
     const loop = (now: number) => {
+      if (!isVisible) {
+        rafId = 0;
+        return;
+      }
       rafId = requestAnimationFrame(loop);
-      if (!isVisible) return;
 
-      const dt = (now - lastTs) / 1000;
+      const dt = Math.min((now - lastTs) / 1000, 0.1);
       lastTs = now;
 
       if (playingRef.current && !scrubbingRef.current) {
@@ -1257,7 +1250,21 @@ export const ShowreelSection: React.FC = () => {
       renderFrame(timeRef.current);
     };
 
-    rafId = requestAnimationFrame(loop);
+    if (containerRef.current) {
+      observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible && !rafId) {
+            lastTs = performance.now();
+            rafId = requestAnimationFrame(loop);
+          }
+        },
+        { threshold: 0.05 }
+      );
+      observer.observe(containerRef.current);
+    }
+
+    renderFrame(0);
     return () => {
       cancelAnimationFrame(rafId);
       if (observer) observer.disconnect();

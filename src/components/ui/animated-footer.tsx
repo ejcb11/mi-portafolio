@@ -92,8 +92,11 @@ interface Cell {
 interface Hand {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
+  baseCanvas: HTMLCanvasElement;
   cells: Map<string, Cell>;
   cellList: Cell[];
+  litCells: Set<Cell>;
+  wasLit: boolean;
   rows: number;
   columns: number;
   cellSize: number;
@@ -150,12 +153,14 @@ function buildHandCells(
 }
 
 /** Light up a wandering cluster of cells starting from `startCell`. */
-function highlightCluster(cells: Map<string, Cell>, startCell: Cell) {
+function highlightCluster(hand: Hand, startCell: Cell) {
+  const { cells, litCells } = hand;
   const now = Date.now();
   startCell.highlightEndTime = now + HIGHLIGHT_LIFETIME;
+  litCells.add(startCell);
 
   const steps = Math.floor(Math.random() * CLUSTER_SIZE) + 1;
-  const litCells = [startCell];
+  const cluster = [startCell];
   let current = startCell;
 
   for (let step = 0; step < steps; step++) {
@@ -164,14 +169,15 @@ function highlightCluster(cells: Map<string, Cell>, startCell: Cell) {
       for (let dx = -1; dx <= 1; dx++) {
         if (dx === 0 && dy === 0) continue;
         const neighbour = cells.get(`${current.col + dx},${current.row + dy}`);
-        if (neighbour && !litCells.includes(neighbour)) neighbours.push(neighbour);
+        if (neighbour && !cluster.includes(neighbour)) neighbours.push(neighbour);
       }
     }
     if (neighbours.length === 0) break;
 
     const next = neighbours[Math.floor(Math.random() * neighbours.length)];
     next.highlightEndTime = now + HIGHLIGHT_LIFETIME + step * 10;
-    litCells.push(next);
+    cluster.push(next);
+    litCells.add(next);
     current = next;
   }
 }
@@ -268,7 +274,7 @@ export function AnimatedFooter({
       const { rows, cells } = buildHandCells(image, columns, asciiChars);
       if (cells.size === 0) return;
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       canvas.width = columns * cellSize * dpr;
       canvas.height = rows * cellSize * dpr;
 
@@ -283,11 +289,32 @@ export function AnimatedFooter({
       const glyphHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
       const baselineOffset = cellSize / 2 + glyphHeight / 2 - metrics.actualBoundingBoxDescent;
 
+      // Pre-render static ASCII hand onto an offscreen canvas once
+      const baseCanvas = document.createElement("canvas");
+      baseCanvas.width = canvas.width;
+      baseCanvas.height = canvas.height;
+      const baseCtx = baseCanvas.getContext("2d");
+      const cellList = [...cells.values()];
+      if (baseCtx) {
+        baseCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        baseCtx.font = `${fontSize}px monospace`;
+        baseCtx.textAlign = "center";
+        baseCtx.textBaseline = "alphabetic";
+        baseCtx.fillStyle = liveRef.current.charColor;
+        for (const cell of cellList) {
+          baseCtx.fillText(cell.char, cell.col * cellSize + cellSize / 2, cell.row * cellSize + baselineOffset);
+        }
+        ctx.drawImage(baseCanvas, 0, 0, columns * cellSize, rows * cellSize);
+      }
+
       hands.push({
         canvas,
         ctx,
+        baseCanvas,
         cells,
-        cellList: [...cells.values()],
+        cellList,
+        litCells: new Set<Cell>(),
+        wasLit: false,
         rows,
         columns,
         cellSize,
@@ -314,22 +341,27 @@ export function AnimatedFooter({
     loadHand(rightImage, rightCanvasRef.current!, -1);
 
     const renderHand = (hand: Hand, now: number) => {
-      const { ctx, cellList, cellSize: cs, baselineOffset, columns: cols, rows } = hand;
-      const { charColor: cc, hoverColor: hc, hoverCharColor: hcc } = liveRef.current;
-      ctx.clearRect(0, 0, cols * cs, rows * cs);
+      if (hand.litCells.size === 0 && !hand.wasLit) return;
 
-      for (const cell of cellList) {
+      const { ctx, baseCanvas, litCells, cellSize: cs, baselineOffset, columns: cols, rows } = hand;
+      const { hoverColor: hc, hoverCharColor: hcc } = liveRef.current;
+      ctx.clearRect(0, 0, cols * cs, rows * cs);
+      ctx.drawImage(baseCanvas, 0, 0, cols * cs, rows * cs);
+
+      for (const cell of litCells) {
+        if (cell.highlightEndTime <= now) {
+          litCells.delete(cell);
+          continue;
+        }
         const x = cell.col * cs;
         const y = cell.row * cs;
-        const isHighlighted = cell.highlightEndTime > now;
-
-        if (isHighlighted) {
-          ctx.fillStyle = hc;
-          ctx.fillRect(x, y, cs, cs);
-        }
-        ctx.fillStyle = isHighlighted ? hcc : cc;
+        ctx.fillStyle = hc;
+        ctx.fillRect(x, y, cs, cs);
+        ctx.fillStyle = hcc;
         ctx.fillText(cell.char, x + cs / 2, y + baselineOffset);
       }
+
+      hand.wasLit = litCells.size > 0;
     };
 
     // ── Pointer: hover highlight + parallax target ───────────────────────
@@ -337,30 +369,52 @@ export function AnimatedFooter({
     const drift = { x: 0, y: 0 };
     // Reveal "curtain": hands start pushed off the edges and slide to 0.
     const curtain = { offset: revealOnScroll ? 125 : 0 };
+    let isRevealed = !revealOnScroll;
+    let lastMouseTime = 0;
 
     const hoverHand = (hand: Hand, clientX: number, clientY: number) => {
       const rect = hand.canvas.getBoundingClientRect();
       if (rect.width === 0 || rect.height === 0) return;
-      const mouseCol = ((clientX - rect.left) / rect.width) * hand.columns;
-      const mouseRow = ((clientY - rect.top) / rect.height) * hand.rows;
+      if (
+        clientX < rect.left ||
+        clientX > rect.right ||
+        clientY < rect.top ||
+        clientY > rect.bottom
+      ) {
+        return;
+      }
+      const mouseCol = Math.floor(((clientX - rect.left) / rect.width) * hand.columns);
+      const mouseRow = Math.floor(((clientY - rect.top) / rect.height) * hand.rows);
+
+      const directCell = hand.cells.get(`${mouseCol},${mouseRow}`);
+      if (directCell) {
+        highlightCluster(hand, directCell);
+        return;
+      }
 
       let closest: Cell | null = null;
       let closestDist = Infinity;
       for (const cell of hand.cellList) {
         const dx = mouseCol - cell.col;
         const dy = mouseRow - cell.row;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+        const dist = dx * dx + dy * dy;
         if (dist < closestDist) {
           closestDist = dist;
           closest = cell;
         }
       }
-      if (closest && closestDist <= liveRef.current.hoverRadius) {
-        highlightCluster(hand.cells, closest);
+      const r = liveRef.current.hoverRadius;
+      if (closest && closestDist <= r * r) {
+        highlightCluster(hand, closest);
       }
     };
 
     const onMouseMove = (event: MouseEvent) => {
+      if (revealOnScroll && !isRevealed) return;
+      const now = performance.now();
+      if (now - lastMouseTime < 24) return;
+      lastMouseTime = now;
+
       const strength = liveRef.current.parallaxStrength;
       const rect = root.getBoundingClientRect();
       const w = rect.width || 1;
@@ -369,16 +423,16 @@ export function AnimatedFooter({
       pointer.y = ((event.clientY - rect.top) / h - 0.5) * strength * 2;
       for (const hand of hands) hoverHand(hand, event.clientX, event.clientY);
     };
-    window.addEventListener("mousemove", onMouseMove);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
 
     // ── Unified render loop: ASCII + parallax + reveal curtain ───────────
     let rafId = 0;
-    let isRevealed = !revealOnScroll;
 
     const frame = () => {
-      rafId = requestAnimationFrame(frame);
-      // Skip rendering and parallax calculations when the footer is offscreen
-      if (revealOnScroll && !isRevealed) return;
+      if (revealOnScroll && !isRevealed) {
+        rafId = 0;
+        return;
+      }
 
       const now = Date.now();
       for (const hand of hands) renderHand(hand, now);
@@ -393,18 +447,28 @@ export function AnimatedFooter({
         const revealX = i === 0 ? -curtain.offset : curtain.offset;
         const x = drift.x * dir || 0;
         const y = -drift.y || 0;
-        // Apply reveal via translateX, then apply parallax via translate, avoiding calc() mixed-unit bugs
-        wrapper.style.transform = `translateX(${revealX}%) translate(${x}px, ${y}px) scale(${scale})`;
+        wrapper.style.transform = `translateX(${revealX}%) translate3d(${x}px, ${y}px, 0) scale(${scale})`;
       });
 
       rafId = requestAnimationFrame(frame);
     };
-    rafId = requestAnimationFrame(frame);
+
+    const startLoop = () => {
+      if (!rafId) {
+        rafId = requestAnimationFrame(frame);
+      }
+    };
+
+    if (isRevealed) {
+      startLoop();
+    }
 
     // ── Reveal (chars + curtain) ─────────────────────────
     const chars = gsap.utils.toArray<HTMLElement>(root.querySelectorAll("[data-af-char]"));
 
     const animateIn = () => {
+      isRevealed = true;
+      startLoop();
       gsap.to(curtain, { offset: 0, duration: 1, ease: "power3.out", overwrite: true });
       gsap.to(chars, {
         yPercent: 0,

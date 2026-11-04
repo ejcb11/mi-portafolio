@@ -164,9 +164,9 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
     let previousMousePosition = { x: 0, y: 0 };
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-      const y = -(((e.clientY - rect.top) / rect.height) * 2 - 1);
+      if (!isVisible) return;
+      const x = (e.clientX / (window.innerWidth || 1)) * 2 - 1;
+      const y = -((e.clientY / (window.innerHeight || 1)) * 2 - 1);
       mouseX = x;
       mouseY = y;
 
@@ -198,9 +198,9 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
       isDragging = false;
     };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseup', handleMouseUp);
-    container.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    container.addEventListener('mousedown', handleMouseDown, { passive: true });
 
     // RESIZE LISTENER
     const handleResize = () => {
@@ -209,27 +209,21 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
       camera.updateProjectionMatrix();
       renderer.setSize(container.clientWidth, container.clientHeight);
     };
-    window.addEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
 
     // ANIMATION LOOP
-    let animationFrameId: number;
+    let animationFrameId = 0;
     let lastTime = performance.now();
-
-    // Pause WebGL rendering loop when offscreen to preserve mobile GPU/CPU
     let isVisible = true;
-    const visibilityObserver = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-      },
-      { threshold: 0.05 }
-    );
-    visibilityObserver.observe(container);
 
     const animate = (currentTime: number = performance.now()) => {
+      if (!isVisible) {
+        animationFrameId = 0;
+        return;
+      }
       animationFrameId = requestAnimationFrame(animate);
-      if (!isVisible) return;
 
-      const delta = (currentTime - lastTime) * 0.001;
+      const delta = Math.min((currentTime - lastTime) * 0.001, 0.1);
       lastTime = currentTime;
 
       // Gentle continuous rotation
@@ -259,6 +253,18 @@ export const Hero3D: React.FC<Hero3DProps> = ({ onLoaded }) => {
 
       renderer.render(scene, camera);
     };
+
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !animationFrameId) {
+          lastTime = performance.now();
+          animationFrameId = requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.05 }
+    );
+    visibilityObserver.observe(container);
 
     animationFrameId = requestAnimationFrame(animate);
 

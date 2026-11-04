@@ -16,7 +16,7 @@ export interface FlipTextProps {
 export function FlipText({
     className,
     children,
-    duration = 4.0,
+    duration = 2.2,
     delay = 0,
     loop = true,
     separator = " ",
