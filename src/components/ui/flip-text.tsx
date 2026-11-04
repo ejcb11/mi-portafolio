@@ -16,7 +16,7 @@ export interface FlipTextProps {
 export function FlipText({
     className,
     children,
-    duration = 2.2,
+    duration = 2.6,
     delay = 0,
     loop = true,
     separator = " ",
@@ -56,10 +56,9 @@ export function FlipText({
         <span
             ref={wrapperRef}
             className={cn(
-                "flip-text-wrapper inline-block leading-none",
+                "flip-text-wrapper inline-flex flex-wrap items-baseline leading-[1.08] max-w-full pr-1",
                 className
             )}
-            style={{ perspective: "1000px" }}
         >
             {words.map((word, wordIndex) => {
                 const chars = word.split("");
@@ -67,8 +66,7 @@ export function FlipText({
                 return (
                     <span
                         key={wordIndex}
-                        className="word inline-block whitespace-nowrap"
-                        style={{ transformStyle: "preserve-3d" }}
+                        className="word inline-block whitespace-nowrap mr-[0.28em] last:mr-0"
                     >
                         {chars.map((char, charIndex) => {
                             const currentGlobalIndex = getCharIndex(wordIndex, charIndex);
@@ -90,7 +88,6 @@ export function FlipText({
                                             "--flip-duration": `${duration}s`,
                                             "--flip-delay": `${calculatedDelay}s`,
                                             "--flip-iteration": loop ? "infinite" : "1",
-                                            transformStyle: "preserve-3d",
                                         } as React.CSSProperties
                                     }
                                 >
@@ -98,9 +95,6 @@ export function FlipText({
                                 </span>
                             );
                         })}
-                        {separator === " " && wordIndex < words.length - 1 && (
-                            <span className="whitespace inline-block">&nbsp;</span>
-                        )}
                         {separator !== " " && wordIndex < words.length - 1 && (
                             <span className="separator inline-block">{separator}</span>
                         )}

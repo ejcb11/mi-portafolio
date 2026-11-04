@@ -24,14 +24,14 @@ export const Projects: React.FC = () => {
   };
 
   return (
-    <section id="projects" className="py-24 bg-dark-surface relative border-b border-dark-border select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="projects" className="py-20 sm:py-24 bg-dark-surface relative border-b border-dark-border select-none">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         
         {/* HEADER SECTION (Clean, without filters or redundant badges) */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
           <div>
             <h2>
-              <FlipText className="font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
+              <FlipText className="font-syne font-black text-[clamp(1.35rem,5.8vw,2.1rem)] sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
                 PROYECTOS DESTACADOS
               </FlipText>
             </h2>

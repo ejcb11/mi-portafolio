@@ -22,17 +22,17 @@ export const Hero: React.FC = () => {
       />
 
       {/* HOMOGENEOUS HERO CANVAS */}
-      <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 my-auto relative z-10">
+      <div className="max-w-7xl mx-auto w-full px-5 sm:px-6 lg:px-8 my-auto relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-10 lg:gap-8">
           
           {/* LEFT: BALANCED TYPOGRAPHY & OVERVIEW */}
           <div className="w-full lg:w-1/2 flex flex-col z-20">
             
             {/* NAME WITH BALANCED PROPORTIONS */}
-            <h1 className="font-syne font-black tracking-tight uppercase text-white leading-[0.95] text-4xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl mb-6 select-none">
-              <span>{PORTFOLIO_DATA.driver.firstName}</span>
+            <h1 className="font-syne font-black tracking-tight uppercase text-white leading-[0.98] text-[clamp(1.75rem,7.5vw,2.6rem)] sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl mb-6 select-none pr-1">
+              <span className="inline-block pr-1">{PORTFOLIO_DATA.driver.firstName}</span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-neon via-white to-zinc-400 text-neon-glow">
+              <span className="inline-block pr-2 text-transparent bg-clip-text bg-gradient-to-r from-neon via-white to-zinc-400 text-neon-glow">
                 {PORTFOLIO_DATA.driver.lastName}
               </span>
             </h1>
@@ -94,7 +94,7 @@ export const Hero: React.FC = () => {
                 <div className="text-[10px] sm:text-[11px] text-zinc-400 uppercase">Lighthouse Perf</div>
               </div>
               <div>
-                <div className="text-lg sm:text-2xl font-black text-white">B2 LEVEL</div>
+                <div className="text-lg sm:text-2xl font-black text-white">B1 LEVEL</div>
                 <div className="text-[10px] sm:text-[11px] text-zinc-400 uppercase">Inglés Intermedio</div>
               </div>
             </div>

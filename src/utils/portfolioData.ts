@@ -55,7 +55,7 @@ export const PORTFOLIO_DATA = {
     email: "ejcb2006@gmail.com",
     github: "https://github.com/ejcb11",
     linkedin: "https://www.linkedin.com/in/eduardo-contreras-dev/",
-    englishLevel: "Nivel B2 (Intermedio-Avanzado)",
+    englishLevel: "Nivel B1 (Intermedio)",
   },
 
   telemetry: [
@@ -94,9 +94,9 @@ export const PORTFOLIO_DATA = {
 
   projects: [
     {
-      id: "ferreira-fitness-gym",
+      id: "fitgym-ecosystem",
       number: "01",
-      title: "FERREIRA FITNESS GYM",
+      title: "FITGYM",
       tagline: "Ecosistema Integral: App Móvil, Recepción & Web",
       category: "MOBILE & CLOUD",
       discipline: "FULL STACK & MOBILE",
@@ -297,9 +297,9 @@ export const PORTFOLIO_DATA = {
       discipline: "WEB, MOBILE & GESTIÓN DE DATOS",
       institution: "UPTAIET & PROYECTOS INDEPENDIENTES",
       location: "Colón, Táchira (Remoto)",
-      summary: "Cursando el último trayecto de Ingeniería en Informática. Desarrollo y puesta en producción de ecosistemas completos: Ferreira Fitness GYM (App en Flutter + Web en Supabase), Clinimant y VidaClinic.",
+      summary: "Cursando el último trayecto de Ingeniería en Informática. Desarrollo y puesta en producción de ecosistemas completos: FitGYM (App en Flutter + Web en Supabase), Clinimant y VidaClinic.",
       highlights: [
-        "Desarrollo de la app móvil Ferreira Fitness con carnet digital QR y sincronización en tiempo real vía Supabase.",
+        "Desarrollo de la app móvil y recepción web FitGYM con carnet digital QR y sincronización en tiempo real vía Supabase.",
         "Certificación oficial de Anthropic en AI Fluency: Framework & Foundations (2026).",
         "Construcción y despliegue de soluciones con bases de datos relacionales en la nube."
       ]

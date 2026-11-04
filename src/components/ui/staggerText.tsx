@@ -59,7 +59,7 @@ export const TextAnimation = ({
       {parts.map((part, i) => (
         <span
           key={i}
-          className="inline-block overflow-hidden relative"
+          className="inline-block overflow-hidden relative pr-[0.04em]"
           style={{ verticalAlign: 'top' }}
         >
           <motion.span

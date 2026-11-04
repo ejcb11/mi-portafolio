@@ -4,15 +4,15 @@ import { TextAnimation } from './ui/staggerText';
 
 export const TelemetryStats: React.FC = () => {
   return (
-    <section id="experience" className="py-24 bg-dark-bg relative border-b border-dark-border overflow-hidden select-none">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section id="experience" className="py-20 sm:py-24 bg-dark-bg relative border-b border-dark-border overflow-hidden select-none">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-16">
           
           {/* LEFT: FORMACIÓN UNIVERSITARIA & PERFIL PROFESIONAL */}
           <div className="w-full lg:w-7/12 flex flex-col justify-center">
             
             {/* Title with slightly slower StaggerText animation */}
-            <h2 className="font-syne font-black text-3xl sm:text-4xl md:text-5xl text-white tracking-tight uppercase leading-[1.08] mb-8">
+            <h2 className="font-syne font-black text-[clamp(1.28rem,5.4vw,1.875rem)] sm:text-4xl md:text-5xl text-white tracking-tight uppercase leading-[1.12] mb-8 pr-1">
               <TextAnimation divideBy="word" delay={0.1}>
                 FORMACIÓN UNIVERSITARIA & PERFIL PROFESIONAL
               </TextAnimation>
@@ -69,12 +69,12 @@ export const TelemetryStats: React.FC = () => {
               <div>
                 <h3 className="font-syne font-bold text-lg sm:text-xl text-white tracking-tight mb-2">
                   <TextAnimation divideBy="word" delay={0.95}>
-                    Estándares de Rendimiento • Lighthouse 100/100 & Inglés B2
+                    Estándares de Rendimiento • Lighthouse 100/100 & Inglés B1
                   </TextAnimation>
                 </h3>
                 <p className="font-space text-sm sm:text-base text-zinc-400 leading-relaxed">
                   <TextAnimation divideBy="word" delay={1.05}>
-                    Priorización de arquitecturas sin bloatware con calificaciones perfectas de rendimiento y accesibilidad, acompañado de comunicación técnica en inglés intermedio-avanzado.
+                    Priorización de arquitecturas sin bloatware con calificaciones perfectas de rendimiento y accesibilidad, acompañado de comunicación técnica en inglés intermedio (B1).
                   </TextAnimation>
                 </p>
               </div>

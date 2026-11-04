@@ -40,8 +40,8 @@ export const PerspectiveScroll: React.FC = () => {
         <div className="absolute bottom-0 left-0 right-0 h-36 sm:h-52 bg-gradient-to-t from-dark-bg via-dark-bg/95 to-transparent pointer-events-none z-20" />
 
         {/* Left and right vignette edges */}
-        <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
-        <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
+        <div className="absolute top-0 bottom-0 left-0 w-6 sm:w-20 bg-gradient-to-r from-dark-bg to-transparent pointer-events-none z-20" />
+        <div className="absolute top-0 bottom-0 right-0 w-6 sm:w-20 bg-gradient-to-l from-dark-bg to-transparent pointer-events-none z-20" />
 
         {/* 3D CRAWLING TEXT MATRIX (Single GPU texture layer) */}
         <motion.div
@@ -49,7 +49,7 @@ export const PerspectiveScroll: React.FC = () => {
             transform,
             willChange: 'transform',
           }}
-          className="w-full max-w-5xl px-4 sm:px-6 text-center font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.14] tracking-tight uppercase"
+          className="w-full max-w-5xl px-6 sm:px-8 text-center font-syne font-black text-[clamp(1.05rem,4.5vw,1.65rem)] sm:text-4xl md:text-5xl lg:text-6xl leading-[1.18] tracking-tight uppercase break-words"
         >
             {/* Block 1: Identity & Engineering */}
             <div className="mb-10 sm:mb-14">

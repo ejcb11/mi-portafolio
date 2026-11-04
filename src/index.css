@@ -91,10 +91,10 @@
 }
 
 /* =========================================================================
-   FlipText (VengeanceUI) Component Styles
+   FlipText (VengeanceUI) Component Styles - Mobile & Desktop Safe 3D Flip
    ========================================================================= */
 .flip-text-wrapper {
-  transform-style: preserve-3d;
+  perspective: 800px;
 }
 
 .flip-char {
@@ -107,14 +107,7 @@
   height: 1.25em;
   line-height: 1.25em;
   vertical-align: middle;
-  animation: flip-char-rotate var(--flip-duration, 4s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
-  animation-play-state: paused;
-}
-
-.flip-text-wrapper.is-visible .flip-char,
-.flip-text-wrapper.is-visible .flip-char::before,
-.flip-text-wrapper.is-visible .flip-char::after {
-  animation-play-state: running;
+  perspective: 600px;
 }
 
 .flip-char::before,
@@ -130,43 +123,56 @@
   top: 50%;
   left: 50%;
   height: 100%;
-  width: 100%;
+  width: max-content;
+  min-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  animation: flip-char-fade var(--flip-duration, 4s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
-  animation-play-state: paused;
+  will-change: transform, opacity;
 }
 
 /* Front Face (Initial) */
 .flip-char::after {
-  transform: translate(-50%, -50%) translateZ(0.6em);
+  transform: translate(-50%, -50%) rotateX(0deg);
+  opacity: 1;
+  animation: flip-char-front var(--flip-duration, 2.6s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+  animation-play-state: paused;
 }
 
-/* Bottom Face (Rotates in) */
+/* Bottom Face (Rotates in seamlessly without disappearing) */
 .flip-char::before {
-  transform: translate(-50%, -50%) rotateX(-90deg) translateZ(0.6em);
+  transform: translate(-50%, -50%) rotateX(-90deg);
   opacity: 0;
-  --opacity: 1;
+  animation: flip-char-back var(--flip-duration, 2.6s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+  animation-play-state: paused;
 }
 
-@keyframes flip-char-rotate {
-  0%, 100% {
-    transform: rotateX(0deg);
-  }
-  25%, 75% {
-    transform: rotateX(90deg);
-  }
+.flip-text-wrapper.is-visible .flip-char::before,
+.flip-text-wrapper.is-visible .flip-char::after {
+  animation-play-state: running;
 }
 
-@keyframes flip-char-fade {
+@keyframes flip-char-front {
   0%, 100% {
+    transform: translate(-50%, -50%) rotateX(0deg);
     opacity: 1;
   }
-  30%, 70% {
-    opacity: var(--opacity, 0);
+  28%, 72% {
+    transform: translate(-50%, -50%) rotateX(90deg);
+    opacity: 0;
+  }
+}
+
+@keyframes flip-char-back {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotateX(-90deg);
+    opacity: 0;
+  }
+  28%, 72% {
+    transform: translate(-50%, -50%) rotateX(0deg);
+    opacity: 1;
   }
 }
 

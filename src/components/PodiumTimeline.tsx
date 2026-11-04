@@ -5,14 +5,14 @@ import { FlipText } from './ui/flip-text';
 
 export const PodiumTimeline: React.FC = () => {
   return (
-    <section id="career" className="py-24 bg-dark-surface relative border-b border-dark-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="career" className="py-20 sm:py-24 bg-dark-surface relative border-b border-dark-border">
+      <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8">
         
         {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
           <div>
             <h2>
-              <FlipText className="font-syne font-black text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
+              <FlipText className="font-syne font-black text-[clamp(1.3rem,5.5vw,2.1rem)] sm:text-4xl md:text-5xl lg:text-6xl text-white tracking-tight uppercase">
                 TRAYECTORIA ACADÉMICA & DEV
               </FlipText>
             </h2>
@@ -23,7 +23,7 @@ export const PodiumTimeline: React.FC = () => {
         </div>
 
         {/* TIMELINE CONTAINER */}
-        <div className="relative border-l border-zinc-800 ml-4 sm:ml-8 pl-6 sm:pl-12 space-y-12">
+        <div className="relative border-l border-zinc-800 ml-3 sm:ml-8 pl-5 sm:pl-12 space-y-10 sm:space-y-12">
           
           {PORTFOLIO_DATA.podiumHistory.map((item, index) => (
             <div
@@ -31,14 +31,14 @@ export const PodiumTimeline: React.FC = () => {
               className="relative group"
             >
               {/* Timeline Marker */}
-              <div className="absolute -left-[35px] sm:-left-[59px] top-0 w-8 h-8 rounded-full bg-dark-card border-2 border-dark-border group-hover:border-neon group-hover:bg-neon transition-all duration-300 flex items-center justify-center">
-                <span className="font-mono text-xs font-black text-white group-hover:text-black">
+              <div className="absolute -left-[31px] sm:-left-[59px] top-0 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-dark-card border-2 border-dark-border group-hover:border-neon group-hover:bg-neon transition-all duration-300 flex items-center justify-center">
+                <span className="font-mono text-[11px] sm:text-xs font-black text-white group-hover:text-black">
                   0{index + 1}
                 </span>
               </div>
 
               {/* CARD */}
-              <div className="bg-dark-card border border-dark-border group-hover:border-neon transition-all duration-300 p-6 sm:p-8 cut-corner-br group-hover:shadow-[0_0_30px_rgba(210,245,50,0.1)]">
+              <div className="bg-dark-card border border-dark-border group-hover:border-neon transition-all duration-300 p-4 sm:p-8 cut-corner-br group-hover:shadow-[0_0_30px_rgba(210,245,50,0.1)]">
                 
                 {/* Top Info */}
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-4 pb-4 border-b border-dark-border/60">

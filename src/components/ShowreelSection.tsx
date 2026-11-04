@@ -1024,7 +1024,7 @@ export const ShowreelSection: React.FC = () => {
       const slides = [
         {
           badge: 'ECOSISTEMA MÓVIL & CLOUD',
-          title: 'FERREIRA FITNESS GYM',
+          title: 'FITGYM',
           detail: 'APP FLUTTER  •  CARNET QR  •  RECEPCIÓN EN TIEMPO REAL',
           invert: false,
         },
