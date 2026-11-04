@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+    background-color: #080809;
+    color: #ffffff;
+  }
+
+  body {
+    overflow-x: hidden;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #080809;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #23252e;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #D2F532;
+  }
+}
+
+/* Background grid & subtle textures */
+.bg-grid-pattern {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.bg-dots-pattern {
+  background-image: radial-gradient(rgba(210, 245, 50, 0.15) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Racing corner cuts (brutalist chamfer) */
+.cut-corner-br {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+}
+
+.cut-corner-tl-br {
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+
+.cut-corner-sm {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+}
+
+/* Neon glow filters */
+.text-neon-glow {
+  text-shadow: 0 0 15px rgba(210, 245, 50, 0.4), 0 0 35px rgba(210, 245, 50, 0.2);
+}
+
+.box-neon-glow {
+  box-shadow: 0 0 25px rgba(210, 245, 50, 0.18), inset 0 0 15px rgba(210, 245, 50, 0.05);
+}
+
+/* Carbon fiber style subtle pattern */
+.carbon-pattern {
+  background: radial-gradient(black 15%, transparent 16%) 0 0,
+    radial-gradient(black 15%, transparent 16%) 8px 8px,
+    radial-gradient(rgba(255,255,255,.05) 15%, transparent 20%) 0 1px,
+    radial-gradient(rgba(255,255,255,.05) 15%, transparent 20%) 8px 9px;
+  background-color: #0b0c0e;
+  background-size: 16px 16px;
+}
+
+@keyframes fadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* =========================================================================
+   FlipText (VengeanceUI) Component Styles
+   ========================================================================= */
+.flip-text-wrapper {
+  transform-style: preserve-3d;
+}
+
+.flip-char {
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  -webkit-text-fill-color: transparent;
+  height: 1.25em;
+  line-height: 1.25em;
+  vertical-align: middle;
+  animation: flip-char-rotate var(--flip-duration, 2.8s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+}
+
+.flip-char::before,
+.flip-char::after {
+  color: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  -webkit-text-fill-color: currentColor;
+  content: attr(data-char);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  animation: flip-char-fade var(--flip-duration, 2.8s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease-in-out;
+}
+
+/* Front Face (Initial) */
+.flip-char::after {
+  transform: translate(-50%, -50%) translateZ(0.6em);
+}
+
+/* Bottom Face (Rotates in) */
+.flip-char::before {
+  transform: translate(-50%, -50%) rotateX(-90deg) translateZ(0.6em);
+  opacity: 0;
+  --opacity: 1;
+}
+
+@keyframes flip-char-rotate {
+  0%, 100% {
+    transform: rotateX(0deg);
+  }
+  25%, 75% {
+    transform: rotateX(90deg);
+  }
+}
+
+@keyframes flip-char-fade {
+  0%, 100% {
+    opacity: 1;
+  }
+  30%, 70% {
+    opacity: var(--opacity, 0);
+  }
+}
+

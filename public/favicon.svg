@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" rx="22" fill="#080809"/>
+  <!-- Left bracket < in Volt Neon -->
+  <path d="M28 32 L16 50 L28 68" stroke="#D2F532" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Central E in Pure White -->
+  <path d="M38 34 H60 M38 50 H54 M38 66 H60 M38 34 V66" stroke="#FFFFFF" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Right slash / in Volt Neon -->
+  <path d="M72 32 L84 68" stroke="#D2F532" stroke-width="11" stroke-linecap="round"/>
+</svg>
